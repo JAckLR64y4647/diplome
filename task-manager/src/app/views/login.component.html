@@ -1,0 +1,12 @@
+<div class="login-container">
+  <div class="login-card">
+    <img src="assets/gitlab-logo.svg" alt="Logo" class="logo">
+    <h2>Sign in</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+      <input type="email" placeholder="Email" formControlName="email">
+      <input type="password" placeholder="Password" formControlName="password">
+      <button type="submit">Sign in</button>
+    </form>
+    <a class="forgot" routerLink="/forgot">Forgot your password?</a>
+  </div>
+</div>

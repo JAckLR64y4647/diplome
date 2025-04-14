@@ -1,0 +1,14 @@
+<div class="login-container">
+  <div class="login-card">
+    <img src="assets/gitlab-logo.svg" alt="Logo" class="logo">
+    <h2>Create account</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
+      <input type="text" placeholder="Full Name" formControlName="name">
+      <input type="email" placeholder="Email" formControlName="email">
+      <input type="password" placeholder="Password" formControlName="password">
+      <input type="password" placeholder="Confirm Password" formControlName="confirmPassword">
+      <button type="submit">Register</button>
+    </form>
+    <a class="forgot" routerLink="/login">Already have an account? Sign in</a>
+  </div>
+</div>
