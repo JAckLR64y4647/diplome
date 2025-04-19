@@ -1,17 +1,35 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TaskService } from '../services/task.service';
+
+@Component({
+  selector: 'app-task-form',
+  templateUrl: './task-form.component.html',
+  styleUrls: ['../ui/task-form.component.css']
+})
 export class TaskFormComponent {
-  isEdit = false;
-  task = { title: '', description: '', priority: 'medium' };
-  styles = `
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      width: 400px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  @Input() task: any = null;
+  @Output() close = new EventEmitter<void>();
+  taskForm: FormGroup;
+
+  constructor(private fb: FormBuilder, private taskService: TaskService) {
+    this.taskForm = this.fb.group({
+      title: ['', Validators.required],
+      priority: ['medium', Validators.required],
+    });
+  }
+
+  ngOnChanges() {
+    if (this.task) {
+      this.taskForm.patchValue(this.task);
     }
-  `;
+  }
+
+  onSubmit() {
+    if (this.taskForm.valid) {
+      const data = { ...this.task, ...this.taskForm.value };
+      const request = this.task ? this.taskService.updateTask(data) : this.taskService.createTask(data);
+      request.subscribe(() => this.close.emit());
+    }
+  }
 }

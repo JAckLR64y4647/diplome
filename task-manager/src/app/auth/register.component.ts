@@ -1,27 +1,27 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
-  templateUrl: '../views/register.component.html',
+  templateUrl: './register.component.html',
   styleUrls: ['../ui/register.component.css']
 })
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
     });
   }
 
   onSubmit() {
-    if (this.registerForm.valid && this.registerForm.value.password === this.registerForm.value.confirmPassword) {
-      console.log('Register data:', this.registerForm.value);
-      // authService.register(...)
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe(() => this.router.navigate(['/tasks']));
     }
   }
 }
